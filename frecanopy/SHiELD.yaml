@@ -1,0 +1,8 @@
+platformYaml: platforms.yaml
+compileYaml: compile.yaml
+fv3_release: main
+phy_release: main
+fms_release: "2023.02"
+drivers_release: "2023.02"
+coupler_release: "2023.02"
+INTEL: intel-classic

@@ -1,0 +1,33 @@
+experiment: shield_nh
+compileInclude: "-IFMS/fms2_io/include -IFMS/include -IFMS/mpp/include" 
+src:
+     - component: "FMS"
+       repo: "https://github.com/NOAA-GFDL/FMS.git"
+       cppdefs: "-Duse_libMPI -Duse_netCDF -Duse_LARGEFILE -DHAVE_SCHED_GETAFFINITY -DINTERNAL_FILE_NML -DGFS_PHYS -DGFS_CONSTANTS -DHAVE_GETTID" 
+       branch: "$(fms_release)"
+     - component: "gfs"
+       requires: ["FMS"]
+       repo: ["https://github.com/NOAA-GFDL/SHiELD_physics.git",
+             "https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere.git"]
+       branch: ["$(phy_release)", "$(fv3_release)"]
+       paths: [gfs/GFDL_atmos_cubed_sphere/model/gfdl_cld_mp.F90,
+              gfs/GFDL_atmos_cubed_sphere/model/cld_eff_rad.F90,
+              gfs/SHiELD_physics/gsmphys,
+              gfs/SHiELD_physics/GFS_layer,
+              gfs/SHiELD_physics/IPD_layer]
+       cppdefs: "-Duse_libMPI -Duse_netCDF -DHAVE_SCHED_GETAFFINITY -DSPMD -Duse_LARGEFILE -DGFS_PHYS -DUSE_GFSL63 -DNEW_TAUCTMAX -DNEMS_GSM -DINTERNAL_FILE_NML -DMOIST_CAPPA -DUSE_COND"
+     - component: "fv3"
+       requires: ["FMS", "gfs"]
+       repo: ["https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere.git",
+             "https://github.com/NOAA-GFDL/SHiELD_physics.git",
+             "https://github.com/NOAA-GFDL/atmos_drivers.git",
+             "https://github.com/NOAA-GFDL/FMScoupler.git"]
+       cppdefs: "-Duse_libMPI -Duse_netCDF -DHAVE_SCHED_GETAFFINITY -DSPMD -Duse_LARGEFILE -DGFS_PHYS -DUSE_GFSL63 -DNEW_TAUCTMAX -DNEMS_GSM -DINTERNAL_FILE_NML -DMOIST_CAPPA -DUSE_COND"
+       branch: ["$(fv3_release)","$(phy_release)","$(drivers_release)", "$(coupler_release)"]
+       paths: [fv3/SHiELD_physics/FV3GFS/,
+              fv3/atmos_drivers/SHiELD/atmos_model.F90,
+              fv3/FMSCoupler/SHiELD/coupler_main.F90,
+              fv3/GFDL_atmos_cubed_sphere/driver/SHiELD/atmosphere.F90,
+              fv3/GFDL_atmos_cubed_sphere/tools/,
+              fv3/GFDL_atmos_cubed_sphere/model/,
+              fv3/GFDL_atmos_cubed_sphere/GFDL_tools/fv_diag_column.F90]
