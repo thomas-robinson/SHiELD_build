@@ -13,6 +13,7 @@ src:
               SHiELD_physics/GFS_layer,
               SHiELD_physics/IPD_layer]
        cppdefs: "-Duse_libMPI -Duse_netCDF -DHAVE_SCHED_GETAFFINITY -DSPMD -Duse_LARGEFILE -DGFS_PHYS -DUSE_GFSL63 -DNEW_TAUCTMAX -DNEMS_GSM -DINTERNAL_FILE_NML -DMOIST_CAPPA -DUSE_COND"
+       otherFlags: "-IFMS/fms2_io/include -IFMS/include -IFMS/mpp/include"
      - component: "fv3"
        requires: ["FMS", "SHiELD_physics"]
        repo: ["https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere.git",
@@ -25,9 +26,11 @@ src:
               fv3/GFDL_atmos_cubed_sphere/tools/,
               fv3/GFDL_atmos_cubed_sphere/model/,
               fv3/GFDL_atmos_cubed_sphere/GFDL_tools/fv_diag_column.F90]
+       otherFlags: "-IFMS/fms2_io/include -IFMS/include -IFMS/mpp/include"
      - component: "FMScoupler"
        requires: ["FMS", "SHiELD_physics", "fv3"]
        repo: "https://github.com/NOAA-GFDL/FMScoupler.git"
        cppdefs: "-Duse_libMPI -Duse_netCDF -DHAVE_SCHED_GETAFFINITY -DSPMD -Duse_LARGEFILE -DGFS_PHYS -DUSE_GFSL63 -DNEW_TAUCTMAX -DNEMS_GSM -DINTERNAL_FILE_NML -DMOIST_CAPPA -DUSE_COND"
        branch: "$(coupler_release)"
        paths: ["FMScoupler/SHiELD/coupler_main.F90"]
+       otherFlags: "-IFMS/fms2_io/include -IFMS/include -IFMS/mpp/include"
